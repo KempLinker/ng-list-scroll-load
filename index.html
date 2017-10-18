@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html ng-app="demo">
+
+<head lang="en">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+    <script type="text/javascript"></script>
+    <title></title>
+    <link rel="stylesheet" href="./static/css/ng-list-scroll-load.css">
+</head>
+<body>
+    <div ng-controller="mainCtrl" >
+        <ul class="list-scroll-load-wrap"
+            ng-list-scroll-load
+            viewport-items="viewList"
+            buffer-amount="10"
+            step-amount="200"
+            target-pos="targetPos"
+            load-animation="true"
+            ng-model="apiList">
+            <li class="list-scroll-load-item" ng-repeat="item in viewList">
+                <img class="item-img" src="./static/src/img.png">
+                <span class="item-name">{{item.name}}</span>
+            </li>
+        </ul>
+        <div id="show"></div>
+        <div id="target">Target: <input ng-model="targetPos"/></div>
+    </div>
+</body>
+<script src="./static/js/lib/jquery/jquery-1.10.1.js"></script>
+<script src="./static/js/lib/angular-1.2.9/angular.min.js"></script>
+<script src="./static/js/app.js"></script>
+<script src="./static/js/lib/ng-list-scroll-load.js"></script>
+</html>
+

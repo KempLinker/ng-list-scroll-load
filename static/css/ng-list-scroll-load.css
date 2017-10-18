@@ -1,0 +1,98 @@
+
+html,body{
+  margin: 0;
+  padding: 0;
+}
+.ng-cloak{
+    display: none;
+}
+.list-scroll-load-wrap{
+    position:relative;
+    display: inline-block;
+    width: 300px;
+    height: 400px;
+    overflow: auto;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.list-scroll-load-item{
+    height: 32px;
+    line-height: 32px;
+    border: #e5e5e5 1px solid;
+    padding: 0 0 0 8px;
+}
+.list-scroll-load-item .item-img{
+    float: left;
+    margin: 2px 8px 0 0;
+}
+.list-scroll-load-item .item-name{
+    float: left;
+    display: inline-block;
+    line-height: 32px;
+}
+.list-scroll-load-ani {
+    position: relative;
+    height: 20px;
+    z-index: 1000;
+    right: 0;
+    left: 0;
+    display: none;
+}
+.list-scroll-load-ani.top{
+    top: 0;
+}
+.list-scroll-load-ani.bottom{
+    bottom: 0;
+}
+.loader-outer{
+    position: absolute;
+    z-index: 999999;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 20px;
+    margin-top: -10px;
+    margin-left: -15px;
+}
+.loader-inner{
+    height: 20px;
+}
+@-webkit-keyframes line-scale-pulse-out-rapid {
+    0%, 90% {
+        -webkit-transform: scaley(1);
+        transform: scaley(1)
+    }
+    80% {
+        -webkit-transform: scaley(.3);
+        transform: scaley(.3)
+    }
+}
+@keyframes line-scale-pulse-out-rapid {
+    0%, 90% {
+        -webkit-transform: scaley(1);
+        transform: scaley(1)
+    }
+    80% {
+        -webkit-transform: scaley(.3);
+        transform: scaley(.3)
+    }
+}
+.line-scale-pulse-out-rapid>div {
+    background-color: #5484E1;
+    width: 2px;
+    height: 15px;
+    border-radius: 2px;
+    margin: 2px;
+    display: inline-block;
+    -webkit-animation: line-scale-pulse-out-rapid .9s 0s infinite cubic-bezier(.11, .49, .38, .78);
+    animation: line-scale-pulse-out-rapid .9s 0s infinite cubic-bezier(.11, .49, .38, .78)
+}
+.line-scale-pulse-out-rapid>div:nth-child(2), .line-scale-pulse-out-rapid>div:nth-child(4) {
+    -webkit-animation-delay: .25s !important;
+    animation-delay: .25s !important
+}
+.line-scale-pulse-out-rapid>div:nth-child(1), .line-scale-pulse-out-rapid>div:nth-child(5) {
+    -webkit-animation-delay: .5s !important;
+    animation-delay: .5s !important
+}
