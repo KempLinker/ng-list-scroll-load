@@ -1,6 +1,5 @@
 
-/*
- * ngListScrollLoad v0.0.1
+/* ! ngListScrollLoad v0.0.1
  * https://github.com/KempLinker/ng-list-scroll-load
  * Copyright (c) 2017 ; Licensed MIT
  *
@@ -10,16 +9,25 @@
  * Only the fixed number of item can be rendered in the visible area.
  * In addition, we can broadcast to located an expected position.
  *
- *
  */
 (function() {
     'use strict';
 
-    angular.module('KL.ngListScrollLoad', []).directive('ngListScrollLoad', ngListScrollLoadDirective);
+    angular.module('KL.ngListScrollLoad', [])
+        .value('listScrollLoadDom', {
+            htmlStr: '<div class="list-scroll-load-ani">'
+                + '<div class="loader-outer">'
+                + '<div class="loader-inner line-scale-pulse-out-rapid" >'
+                + '<div></div><div></div><div></div><div></div><div></div>'
+                + '</div>'
+                + '</div>'
+                + '</div>'
+        })
+        .directive('ngListScrollLoad', ngListScrollLoadDirective);
 
-    ngListScrollLoadDirective.$inject = ['$timeout','$log'];
+    ngListScrollLoadDirective.$inject = ['$timeout','$log','listScrollLoadDom'];
 
-    function ngListScrollLoadDirective($timeout) {
+    function ngListScrollLoadDirective($timeout, $log, listScrollLoadDom) {
         return {
             require: '?ngModel',
             scope: {
@@ -165,13 +173,7 @@
                  */
                 scrollComponent.prototype.initLoadingDom = function (){
                     var element = this.getScrollEle();
-                    var templateDomHtml = '<div class="list-scroll-load-ani">'
-                        + '<div class="loader-outer">'
-                        + '<div class="loader-inner line-scale-pulse-out-rapid" >'
-                        + '<div></div><div></div><div></div><div></div><div></div>'
-                        + '</div>'
-                        + '</div>'
-                        + '</div>';
+                    var templateDomHtml = listScrollLoadDom.htmlStr;
                     var $topLoadingDom = $(templateDomHtml).addClass('J-scroll-loading-top top');
                     var $bottomLoadingDom = $(templateDomHtml).addClass('J-scroll-loading-bottom bottom');
                     $timeout(function() {
@@ -474,13 +476,28 @@
                         this.isScrollDown = true;
                     }
                     this.prevScrollVal = scrollVal;
+                    // 滚动停止的后续处理
+                    this.handleScrollStop();
+                    // 滚动过程中计算需要加载的数据
+                    return requestAnimationFrame(function () {
+                        return _this.calcItems();
+                    });
 
-                    // 计时，用于滚动停止时的后续处理
+                };
+
+                /**
+                 * 计时，用于滚动停止时的后续处理
+                 */
+                scrollComponent.prototype.handleScrollStop = function(){
+                    var _this = this;
                     clearInterval(this.intervalFunc);
                     this.intervalFunc = setInterval(function(){
                         clearInterval(_this.intervalFunc);
                         _this.intervalFunc = null;
-                        this.isScrollLoop = false;
+                        _this.isScrollLoop = false;
+                        if( _this.isScrollLoading ){
+                            return false;
+                        }
                         if( _this.isScrollTop() ) {
                             _this.calcItems();
                             _this.reCalcScrollTop();
@@ -491,12 +508,6 @@
                         }
 
                     }, 50);
-
-                    // 滚动过程中计算需要加载的数据
-                    return requestAnimationFrame(function () {
-                        return _this.calcItems();
-                    });
-
                 };
 
                 /**
@@ -516,6 +527,12 @@
                         }
                         // 使用动画时，开启或者关闭加载动画
                         if( _this.loadAnimation ){
+                            if( _this.isScrollTop() ) {
+                                _this.reCalcScrollTop();
+                            }
+                            if( _this.isScrollBottom() ) {
+                                _this.reCalcScrollBottom();
+                            }
                             _this.toggleLoadingAnim();
                         }
                         showDebugHtml();
