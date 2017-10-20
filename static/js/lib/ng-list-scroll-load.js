@@ -97,6 +97,9 @@
                     this.stepAmount = scopeData.stepAmount;
                     this.bufferAmount = scopeData.bufferAmount;
                     this.end = this.start + this.initAmount;
+                    if( !this.checkDefaultData() ){
+                        return false;
+                    }
                     this.initDefaultModule();
                     if( this.loadAnimation ) {
                         this.initLoadingDom();
@@ -124,6 +127,30 @@
                     this.viewportItems = this.wholeItems.slice(start, end);
                     scope.viewportItems = this.viewportItems;
                     this.handleScrollEvents( this.eleScroll );
+                };
+
+                /**
+                 * 初始化第一次渲染的数据
+                 * 绑定滚动事件
+                 */
+                scrollComponent.prototype.checkDefaultData = function(){
+                    var initAmount = this.initAmount;
+                    var stepAmount = this.stepAmount;
+                    var bufferAmount = this.bufferAmount;
+                    if( !initAmount || !stepAmount || !bufferAmount || initAmount < 0 || stepAmount < 0 || bufferAmount < 0 ){
+                        $log.warn('Initial data is invalid');
+                        return false;
+                    }
+                    if( initAmount <= stepAmount || Math.floor(initAmount/stepAmount) < 3 ){
+                        $log.warn('The InitAmount must be larger than 3 times of the StepAmount');
+                        return false;
+                    }
+                    if( stepAmount < bufferAmount ){
+                        $log.warn('The StepAmount must be larger than the BufferAmount');
+                        return false;
+                    }
+
+                    return true;
                 };
 
                 /**
@@ -597,7 +624,7 @@
                     });
 
                 } else {
-                    $log.debug('ngLazyScrollLoad: ngModel not provided!', element);
+                    $log.warn('ngLazyScrollLoad: ngModel not provided!', element);
                 }
 
                 /**
