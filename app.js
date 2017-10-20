@@ -1,7 +1,7 @@
 var demoApp = angular.module('demo', [
     'KL.ngListScrollLoad'
 ]);
-demoApp.controller('mainCtrl', ['$scope', '$http',
+demoApp.controller('demoCtrl', ['$scope', '$http',
     function ($scope, $http) {
        
         $scope.getList = function(){
