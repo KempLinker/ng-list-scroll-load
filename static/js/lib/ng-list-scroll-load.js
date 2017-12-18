@@ -134,6 +134,7 @@
                  * 绑定滚动事件
                  */
                 scrollComponent.prototype.checkDefaultData = function(){
+                    var loadAnimation = this.loadAnimation;
                     var initAmount = this.initAmount;
                     var stepAmount = this.stepAmount;
                     var bufferAmount = this.bufferAmount;
@@ -149,7 +150,13 @@
                         $log.warn('The StepAmount must be larger than the BufferAmount');
                         return false;
                     }
-
+                    if( !!loadAnimation ){
+                        var reg = /^[0-9]*[1-9][0-9]*$/;
+                        if( !reg.test(loadAnimation) ){
+                            $log.warn('The LoadAnimation must be a positive integer');
+                            return false;
+                        }
+                    }
                     return true;
                 };
 

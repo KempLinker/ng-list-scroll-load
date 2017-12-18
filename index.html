@@ -12,12 +12,13 @@
     <div ng-controller="demoCtrl" >
         <ul class="list-scroll-load-wrap"
             ng-list-scroll-load
+            ng-model="apiList"
             viewport-items="viewList"
+            init-amount="200"
+            step-amount="40"
             buffer-amount="10"
-            step-amount="200"
-            target-pos="targetPos"
-            load-animation="true"
-            ng-model="apiList">
+            load-animation="1000"
+            target-pos="targetPos">
             <li class="list-scroll-load-item" ng-repeat="item in viewList">
                 <img class="item-img" src="./static/src/img.png">
                 <span class="item-name">{{item.name}}</span>
@@ -27,7 +28,7 @@
         <div id="target">Target: <input ng-model="targetPos"/></div>
     </div>
 </body>
-<script src="./static/js/lib/jquery/jquery-1.10.1.js"></script>
+<script src="./static/js/lib/jquery/jquery-1.10.1.min.js"></script>
 <script src="./static/js/lib/angular-1.2.9/angular.min.js"></script>
 <script src="./app.js"></script>
 <script src="./static/js/lib/ng-list-scroll-load.js"></script>
